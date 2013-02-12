@@ -1,0 +1,15 @@
+DROP  table portal.privilegi;
+DROP  table portal.riepilogocapitoli;
+DROP  table portal.riepilogomissdip;
+DROP  table portal.spese_tipi;
+DROP  table portal.titolariperappuntamento;
+DROP  table portal.vaccessi;
+DROP  table portal.vagenda;
+DROP table portal.vdelegatiapp;
+DROP table portal.vgiornale;
+DROP table portal.vmessaggi;
+DROP table portal.vmissioni;
+DROP table portal.vordinanze;
+DROP table portal.vregistro;
+DROP table portal.vrubrica;
+DROP table portal.vtitolari;
