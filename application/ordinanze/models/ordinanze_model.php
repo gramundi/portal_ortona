@@ -14,7 +14,7 @@ class ordinanze_model extends CI_Model {
  
   function get_infouser($user){
 
-        $sql='SELECT nome,cognome from UTENTI WHERE USERNAME = '."'".$user."'";
+        $sql='SELECT nome,cognome from utenti WHERE USERNAME = '."'".$user."'";
 
         //echo $sql;
 
@@ -33,7 +33,7 @@ class ordinanze_model extends CI_Model {
 
  function get_tipi(){
 
-    $sql='SELECT descrizione FROM TIPI_ORDINANZE';
+    $sql='SELECT descrizione FROM tipi_ordinanze';
     $rs=$this->db->query($sql);
     //log_message('debug', $rs->num_rows());
     if  ($rs->num_rows()>0){
@@ -49,7 +49,7 @@ class ordinanze_model extends CI_Model {
 
  function get_ordinanti(){
 
-    $sql='SELECT cognome FROM ORDINANTI where stato='."'".'A'."'";
+    $sql='SELECT cognome FROM ordinanti where stato='."'".'A'."'";
     $rs=$this->db->query($sql);
     //log_message('debug', $rs->num_rows());
     if  ($rs->num_rows()>0){
@@ -84,7 +84,7 @@ class ordinanze_model extends CI_Model {
   
   $data=array();
   $sql='SELECT id,codice,rif,ordinante,gestore,tipo,oggetto,descrizione,gestore,file,stato';
-  $sql=$sql.' FROM VORDINANZE WHERE 1=1 ';
+  $sql=$sql.' FROM vordinanze WHERE 1=1 ';
  
   $filtri=explode('-',$filter);
 
@@ -93,7 +93,7 @@ class ordinanze_model extends CI_Model {
   if ($filtri[1]!='NUL') $sql=$sql.' AND ordinante='."'".$filtri[1]."'";
   if ($filtri[2]!='NUL') $sql=$sql.' AND gestore LIKE '."'%".$filtri[2]."%'";
   if ($filtri[3]!='NUL') $sql=$sql.' AND oggetto LIKE '."'%".$filtri[3]."%'";
-  if ($filtri[4]!='NUL') $sql=$sql.' AND rif LIKE '."'%".$filtri[4]."%'";
+  //if ($filtri[4]!='NUL') $sql=$sql.' AND rif LIKE '."'%".$filtri[4]."%'";
   
   
   if ($id!=0) $sql=$sql.' AND ID='.$id;
@@ -131,7 +131,7 @@ function Count_All($table,$filter){
 
 function get_id_ordinante($filtro){
 
-    $sql='SELECT id from ORDINANTI WHERE cognome='."'".$filtro."'";
+    $sql='SELECT id from ordinanti WHERE cognome='."'".$filtro."'";
     $rs=$this->db->query($sql);
     return $rs->row()->id;
 
@@ -140,7 +140,7 @@ function get_id_ordinante($filtro){
 
 function get_id_tipo($ordinante){
 
-    $sql='SELECT id_tipo_ord from ORDINANTI WHERE id='."'".$ordinante."'";
+    $sql='SELECT id_tipo_ord from ordinanti WHERE id='."'".$ordinante."'";
     //echo $sql;
     $rs=$this->db->query($sql);
     return $rs->row()->id_tipo_ord;
@@ -166,12 +166,12 @@ function dml_ordinanze($op,$rec){
         //Calcolo progressivo codice
         // se non trova record per l'anno nuovo Null è convertiro in 0 e si riparte
         // da 1
-        $q='SELECT max(progr) as progr FROM ORDINANZE WHERE anno='."'".$anno."'";
+        $q='SELECT max(progr) as progr FROM ordinanze WHERE anno='."'".$anno."'";
         $rs=$this->db->query($q);
         $progr=$rs->row()->progr+1;
         $codice=$progr.' '.date('Y');
         
-        $sql='INSERT INTO ORDINANZE (id_utente,id_ordinante, id_tipo, oggetto, descrizione, datareg, datamod, anno, progr, codice, rif, stato)';
+        $sql='INSERT INTO ordinanze (id_utente,id_ordinante, id_tipo, oggetto, descrizione, datareg, datamod, anno, progr, codice, rif, stato)';
         $sql=$sql.' VALUES ('.$utente.','.$id_ordinante.','.$id_tipo.', '."'".$oggetto."'".', '."'".$descrizione."'".', CURDATE(),CURDATE()';
         $sql=$sql.', '.$anno.', '.$progr.', '."'".$codice."'".', '."'".$rif."'".', '."'".'I'."'".')';
         $rs=$this->db->query($sql);
@@ -188,7 +188,7 @@ function dml_ordinanze($op,$rec){
         $descrizione=mysql_real_escape_string($rec['descrizione']);
         $id=$rec['id'];
 
-        $sql='UPDATE ORDINANZE SET id_utente='.$utente.',id_ordinante='.$id_ordinante.',id_tipo='.$id_tipo;
+        $sql='UPDATE ordinanze SET id_utente='.$utente.',id_ordinante='.$id_ordinante.',id_tipo='.$id_tipo;
         $sql=$sql.',oggetto='."'".$oggetto."'".',descrizione='."'".$descrizione."'";
         $sql=$sql.',datamod=CURDATE(),rif='."'".$rif."'".' WHERE id='.$id;
         $rs=$this->db->query($sql);
@@ -226,7 +226,7 @@ function dml_ordinanze($op,$rec){
           $rec_ori=$rs->row()->rec_ori;
           //echo 'risultato='.$rec_ori;
 
-          $sql='INSERT into LOG_ORDINANZE(data_mod,id_ute,id_recmod,rec_ori) values (CURDATE(),'.$utente;
+          $sql='INSERT into log_ordinanze(data_mod,id_ute,id_recmod,rec_ori) values (CURDATE(),'.$utente;
           $sql=$sql.','.$id.','."'".$rec_ori."'".')';
           //echo 'insert_log_ordinanze='.$sql;
 
@@ -234,12 +234,12 @@ function dml_ordinanze($op,$rec){
 
           //Predno id LOG per utilizzarlo dopo la modifica
            $this->db->select_max('id');
-          $query = $this->db->get('LOG_ORDINANZE');
+          $query = $this->db->get('log_ordinanze');
           $id_log=$query->row()->id;
           //echo $id_log;
 
         // Applico la Modifica sulle ordinanze
-        $sql='UPDATE ORDINANZE SET id_utente='.$utente.',id_ordinante='.$id_ordinante.',id_tipo='.$id_tipo;
+        $sql='UPDATE ordinanze SET id_utente='.$utente.',id_ordinante='.$id_ordinante.',id_tipo='.$id_tipo;
         $sql=$sql.',oggetto='."'".$oggetto."'".',descrizione='."'".$descrizione."'";
         $sql=$sql.',datamod=CURDATE(),rif='."'".$rif."'".' WHERE id='.$id;
 
@@ -264,7 +264,7 @@ function dml_ordinanze($op,$rec){
           $rec_mod=$rs->row()->rec_mod;
 
 
-        $sql='UPDATE LOG_ORDINANZE SET rec_mod='."'".$rec_mod."'".'WHERE id='.$id_log;
+        $sql='UPDATE log_ordinanze SET rec_mod='."'".$rec_mod."'".'WHERE id='.$id_log;
         $rs=$this->db->query($sql);
         
      
@@ -277,7 +277,7 @@ function dml_ordinanze($op,$rec){
 // un ordinanza già confermata e pubblicata.
 if ($op=='conferma'){
         $id=$rec['id'];
-        $sql='UPDATE ORDINANZE SET stato='."'".'C'."'".' WHERE id='.$id;
+        $sql='UPDATE ordinanze SET stato='."'".'C'."'".' WHERE id='.$id;
         $rs=$this->db->query($sql);
     }
 
@@ -286,7 +286,7 @@ if ($op=='conferma'){
  if ($op=='upload'){
         $nome=$rec['nomefile'];
         $id=$rec['id'];
-        $sql='UPDATE ORDINANZE SET file='."'".$nome."'".' WHERE id='.$id;
+        $sql='UPDATE ordinanze SET file='."'".$nome."'".' WHERE id='.$id;
         $rs=$this->db->query($sql);
     }
 

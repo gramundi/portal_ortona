@@ -160,6 +160,7 @@
  * And away we go...
  *
  */
+
 require_once BASEPATH.'core/CodeIgniter'.EXT;
 
 /* End of file index.php */

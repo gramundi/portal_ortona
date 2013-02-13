@@ -49,7 +49,7 @@ class cross_data extends CI_Model {
 
   function get_tipiatti(){
 
-    $sql='SELECT descrizione FROM TIPI_ATTI';
+    $sql='SELECT descrizione FROM tipi_atti';
     $rs=$this->db->query($sql);
     //log_message('debug', $rs->num_rows());
     if  ($rs->num_rows()>0){
@@ -66,7 +66,7 @@ class cross_data extends CI_Model {
 
   $data=array();
   $sql='SELECT tipo,oggetto,descrizione';
-  $sql=$sql.' FROM VREGISTRO WHERE tipo='."'".$filter."'";
+  $sql=$sql.' FROM vregistro WHERE tipo='."'".$filter."'";
   $sql=$sql.' AND ANNO=2012';
   $sql=$sql.' AND STATO='."'".'P'."'";
 

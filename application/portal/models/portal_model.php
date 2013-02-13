@@ -16,7 +16,7 @@ class portal_model extends CI_Model {
 
 
   $data=array();
-  $sql='SELECT * FROM VRUBRICA WHERE 1=1 ';
+  $sql='SELECT * FROM vrubrica WHERE 1=1 ';
 
   $filtri=explode('-',$filter);
 
@@ -49,7 +49,7 @@ function getdata_messaggi($filter,$off=0,$lim=6) {
 
 
   $data=array();
-  $sql='SELECT * FROM VMESSAGGI WHERE 1=1 ';
+  $sql='SELECT * FROM vmessaggi WHERE 1=1 ';
 
   $filtri=explode('-',$filter);
 
@@ -100,7 +100,7 @@ function getdata_messaggi($filter,$off=0,$lim=6) {
      $id_mitt=$this->session->userdata('id_user');
 
      echo('id_dest:'.$id_dest.'oggetto:'.$oggetto.'testo:'.$testo.'rif:'.$rif);
-     $sql='INSERT INTO MESSAGGI(id_rif,data_crea,id_mitt, id_dest, oggetto, testo) VALUES ('.$rif.',NOW(),'.$id_mitt;
+     $sql='INSERT INTO messaggi(id_rif,data_crea,id_mitt, id_dest, oggetto, testo) VALUES ('.$rif.',NOW(),'.$id_mitt;
      $sql=$sql.','.$id_dest.','."'".$oggetto."'".','."'".$testo."'".')';
      echo $sql;
      $rs=$this->db->query($sql);
@@ -110,7 +110,7 @@ function getdata_messaggi($filter,$off=0,$lim=6) {
   //Inserisce un nuovo messaggio nel database
   function change_stato($id,$stato){
 
-     $sql='UPDATE MESSAGGI SET STATO='."'".$stato."'".' WHERE ID='.$id;
+     $sql='UPDATE messaggi SET STATO='."'".$stato."'".' WHERE ID='.$id;
      //echo $sql;
      $rs=$this->db->query($sql);
 
@@ -120,7 +120,7 @@ function getdata_messaggi($filter,$off=0,$lim=6) {
   //Get Nr. Post it utente 
   function num_postit($id_usr){
 
-     $sql='SELECT count(*) as nrnotes from NOTES WHERE id_user='.$id_usr;
+     $sql='SELECT count(*) as nrnotes from notes WHERE id_user='.$id_usr;
      $rs=$this->db->query($sql);
      return $rs->row()->nrnotes;
 
@@ -128,7 +128,7 @@ function getdata_messaggi($filter,$off=0,$lim=6) {
 
   //Get Max Rif
   function rif_max($id_usr){
-     $sql='SELECT ifnull(max(rif),0) as maxrif from NOTES WHERE id_user='.$id_usr;
+     $sql='SELECT ifnull(max(rif),0) as maxrif from notes WHERE id_user='.$id_usr;
      $rs=$this->db->query($sql);
      return $rs->row()->maxrif;
 
@@ -137,7 +137,7 @@ function getdata_messaggi($filter,$off=0,$lim=6) {
   //Get Post it utente
   function get_postit($id_usr){
 
-     $sql='SELECT * from NOTES WHERE id_user='.$id_usr;
+     $sql='SELECT * from notes WHERE id_user='.$id_usr;
      $rs=$this->db->query($sql);
      if  ($rs->num_rows()>0){
 
@@ -155,20 +155,20 @@ function getdata_messaggi($filter,$off=0,$lim=6) {
 
      $id_usr=$this->session->userdata('id_user');
      if($op=='del'){
-        $sql='DELETE from NOTES WHERE rif='.$rif.' AND id_user='.$id_usr;
+        $sql='DELETE from notes WHERE rif='.$rif.' AND id_user='.$id_usr;
         //echo $sql;
         $rs=$this->db->query($sql);
      }
      else {
-        $sql='SELECT * from NOTES WHERE id_user='.$id_usr.' AND rif='.$rif;
+        $sql='SELECT * from notes WHERE id_user='.$id_usr.' AND rif='.$rif;
         $rs=$this->db->query($sql);
         if  ($rs->num_rows()>0){
-            $sql='UPDATE NOTES SET testo='."'".$testo."'".' WHERE id_user='.$id_usr.' AND rif='.$rif;
+            $sql='UPDATE notes SET testo='."'".$testo."'".' WHERE id_user='.$id_usr.' AND rif='.$rif;
             //echo $sql;
             $rs=$this->db->query($sql);
         }
         else {
-            $sql='INSERT INTO NOTES(id_user, dt, rif,testo) VALUES ('.$id_usr.',NOW(),'.$rif.','."'".$testo."'".')';
+            $sql='INSERT INTO notes(id_user, dt, rif,testo) VALUES ('.$id_usr.',NOW(),'.$rif.','."'".$testo."'".')';
             //echo $sql;
             $rs=$this->db->query($sql);
 

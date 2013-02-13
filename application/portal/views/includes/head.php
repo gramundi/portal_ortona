@@ -31,7 +31,6 @@
   <body>
   <?php if (strpos(dirname(__FILE__),'app_porsvil')) echo '<h9>SVILUPPO</h9>'; ?>
   <div id="main-div">
-  
   <ul id="menu">
       <li><?php echo anchor('logout', 'Logout')?></li>
       <li><?php echo anchor('welcome_portal', 'Home')?></li>

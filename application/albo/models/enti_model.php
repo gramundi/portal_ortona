@@ -15,7 +15,7 @@ function CercaEnte($str){
 
      //echo 'CERCA ENTE';
      $data=array();
-     $sql='SELECT id,tipo,nome FROM ENTI WHERE NOME LIKE '."'%".$str."%'";
+     $sql='SELECT id,tipo,nome FROM enti WHERE NOME LIKE '."'%".$str."%'";
      //log_message('debug', 'CErcaUser:'.$sql);
      $rs=$this->db->query($sql);
       if  ($rs->num_rows()>0){
@@ -32,7 +32,7 @@ function Get_Ente($id){
 
      //echo 'CERCA ENTE';
 
-     $sql='SELECT nome FROM ENTI WHERE id='.$id;
+     $sql='SELECT nome FROM enti WHERE id='.$id;
      $rs=$this->db->query($sql);
      if  ($rs->num_rows()>0){
             return $rs->row()->nome;
@@ -46,7 +46,7 @@ function Get_Enti($ente){
 
      //echo 'CERCA ENTE';
 
-     $sql='SELECT * FROM ENTI WHERE STATO!='."'".'C'."'";
+     $sql='SELECT * FROM enti WHERE STATO!='."'".'C'."'";
      $sql=$sql.'AND NOME LIKE '."'%".$ente."%'";
      $rs=$this->db->query($sql);
      if  ($rs->num_rows()>0){
@@ -65,7 +65,7 @@ function Get_Enti($ente){
         $piva=$rec['piva'];
         $cf=$rec['cf'];
 
-        $q='INSERT INTO ENTI(tipo,nome,indir,tel,piva,cf,stato) ';
+        $q='INSERT INTO enti(tipo,nome,indir,tel,piva,cf,stato) ';
         $q=$q.'VALUES ('."'".$tipo."'".','."'".$nome."'".','."'".$indir."'".','."'".$tel."'".','."'".$piva."'";
         $q=$q.','."'".$cf."'".','."'".'A'."'".')';
         //echo $q;
@@ -84,7 +84,7 @@ function Get_Enti($ente){
         $piva=$rec['piva'];
         $cf=$rec['cf'];
         
-        $q=' UPDATE ENTI SET  tipo = '."'".$tipo."'".',nome = '."'".$nome."'".',indir = '."'".$indir."'";
+        $q=' UPDATE enti SET  tipo = '."'".$tipo."'".',nome = '."'".$nome."'".',indir = '."'".$indir."'";
         $q=$q.', tel = '."'".$tel."'".', piva = '."'".$piva."'".', cf = '."'".$cf."'";
         $q=$q.' WHERE id='.$id;
         //echo $q;
@@ -96,7 +96,7 @@ function Get_Enti($ente){
    function delete_ente($id){
 
         
-        $q=' UPDATE ENTI SET STATO='."'".'C'."'".'WHERE id='.$id;
+        $q=' UPDATE enti SET STATO='."'".'C'."'".'WHERE id='.$id;
 
         $rs=$this->db->query($q);
 

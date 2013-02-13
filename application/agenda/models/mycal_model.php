@@ -101,12 +101,12 @@ class Mycal_model extends CI_Model {
             $result=$this->Check_appuntamento($rs->row()->data,$rec['id_titolare'],$rs->row()->ora,$rs->row()->min);
             //echo 'result='.$result;
             if ( $result > 0 ) return 0;
-            $sql='INSERT INTO AGENDATITOLARI(id_titolare, id_agenda, titolo)';
+            $sql='INSERT INTO agendatitolari(id_titolare, id_agenda, titolo)';
             $sql.='VALUES ('.$rec['id_titolare'].','.$rec['id_appuntamento'].','."'".$rec['titolo']."'".')';
             $this->db->query($sql);
             }
             else {
-                $sql='DELETE FROM AGENDATITOLARI WHERE id_agenda='.$rec['id_appuntamento'];
+                $sql='DELETE FROM agendatitolari WHERE id_agenda='.$rec['id_appuntamento'];
                 $sql.=' AND id_titolare='.$rec['id_titolare'];
                 echo $sql;
                 $this->db->query($sql);
@@ -122,7 +122,7 @@ class Mycal_model extends CI_Model {
            
             if ($op=='add'){
 
-                $sql='INSERT INTO AGENDA(data, ora, ora_fraz, id_richiedente, tipo, titolo, descrizione)';
+                $sql='INSERT INTO agenda(data, ora, ora_fraz, id_richiedente, tipo, titolo, descrizione)';
                 $sql.='VALUES (STR_TO_DATE('."'".$rec['data']."'".','."'".'%d/%m/%Y'."'".'),'.$rec['ora'];
                 $sql.=','."'".$rec['min']."'".','.$rec['richiedente'].','."'".$rec['tipo']."'".',';
                 $sql.="'".$rec['titolo']."'".','."'".$rec['descrizione']."'".')';
@@ -131,7 +131,7 @@ class Mycal_model extends CI_Model {
                 $rs=$this->db->select_max('id','maxid')->get('agenda');
                 $id_agenda=$rs->row()->maxid;
 
-                $sql='INSERT INTO AGENDATITOLARI(id_titolare, id_agenda, titolo)';
+                $sql='INSERT INTO agendatitolari(id_titolare, id_agenda, titolo)';
                 $sql.='VALUES ('.$rec['id_titolare'].','.$id_agenda.','."'".$rec['titolo']."'".')';
                 $this->db->query($sql);
                 
@@ -141,7 +141,7 @@ class Mycal_model extends CI_Model {
             }
             //Modifica appuntamento
             if ($op=='mod'){
-                $sql='UPDATE AGENDA SET data=STR_TO_DATE('."'".$rec['data']."'".','."'".'%d/%m/%Y'."'".')';
+                $sql='UPDATE agenda SET data=STR_TO_DATE('."'".$rec['data']."'".','."'".'%d/%m/%Y'."'".')';
                 $sql.=',ora='.$rec['ora'].',ora_fraz='."'".$rec['min']."'".',id_richiedente='.$rec['richiedente'];
                 $sql.=',tipo='."'".$rec['tipo']."'".',titolo='."'".$rec['titolo']."'";
                 $sql.=',descrizione='."'".$rec['descrizione']."'".' WHERE id='.$rec['id'];
@@ -154,9 +154,9 @@ class Mycal_model extends CI_Model {
             }
 
             if ($op=='del'){
-                $sql='DELETE FROM  AGENDATITOLARI WHERE id_agenda='.$rec['id'];
+                $sql='DELETE FROM  agendatitolari WHERE id_agenda='.$rec['id'];
                 $this->db->query($sql);
-                $sql='DELETE FROM AGENDA WHERE id='.$rec['id'];
+                $sql='DELETE FROM agenda WHERE id='.$rec['id'];
                 $this->db->query($sql);
             }
 		
@@ -167,7 +167,7 @@ class Mycal_model extends CI_Model {
 function get_appuntamento($id,$id_titolare) {
    $data=array();
 
-   $sql='SELECT ora,min,id_richiedente,richiedente, tipo,titolari,oggetto,descrizione from VAGENDA WHERE id_appuntamento='.$id;
+   $sql='SELECT ora,min,id_richiedente,richiedente, tipo,titolari,oggetto,descrizione from Vagenda WHERE id_appuntamento='.$id;
    $sql.=' AND id_titolare='.$id_titolare;
    //echo $sql;
    $rs=$this->db->query($sql);
@@ -321,7 +321,7 @@ function get_delegati_app($id_appuntamento) {
 function Check_appuntamento($dataapp,$id_titolare,$ora,$min){
 
   //Controlla se il titolare id_titolare è impegnato nel data-ora dell'appuntamento
-  $sql='SELECT min FROM VAGENDA WHERE id_titolare='.$id_titolare;
+  $sql='SELECT min FROM vagenda WHERE id_titolare='.$id_titolare;
   $sql.=' and ora='.$ora.' and date(data)=str_to_date('."'".$dataapp."'".','."'".'%d/%m/%Y'."')";
   $sql.=' and min='."'".$min."'";
   //echo $sql;

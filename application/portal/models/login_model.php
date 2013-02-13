@@ -105,7 +105,7 @@ function Count_All($table,$filter=0){
             $rs=$this->db->query($q);
             if ($rs->row()->u_att) return 'l_att';
             else{
-                $q='INSERT INTO LOG(ID_UTENTE,DATAINI,DATAFIN,SESSION_ID)';
+                $q='INSERT INTO log(ID_UTENTE,DATAINI,DATAFIN,SESSION_ID)';
                 $q=$q.' VALUES ('.$id_user.', NOW(),STR_TO_DATE('."'".'01,01,1900'."'".','."'".'%d,%m,%Y'."'".'),';
                 $q=$q."'".$session_id."'".')';
 
@@ -122,7 +122,7 @@ function Count_All($table,$filter=0){
             
              if ($q->num_rows()>0) {
                      $id=$q->row()->id;
-                     $q='UPDATE  LOG SET DATAFIN=NOW(),TEMPOCONN=(hour(datafin)*3600 + minute(datafin)*60+ second(datafin))-';
+                     $q='UPDATE  log SET DATAFIN=NOW(),TEMPOCONN=(hour(datafin)*3600 + minute(datafin)*60+ second(datafin))-';
                      $q=$q.'(hour(dataini)*3600 + minute(dataini)*60+ second(dataini))'.'WHERE ID='.$id;
                      $rs=$this->db->query($q);
             }
@@ -141,7 +141,7 @@ function Count_All($table,$filter=0){
         $username=$rec['username'];
         $password=$this->encrypt->encode($rec['password']);
 
-        $q='INSERT INTO UTENTI(username, password, nome, cognome, id_qua, id_cap,stato) ';
+        $q='INSERT INTO utenti(username, password, nome, cognome, id_qua, id_cap,stato) ';
         $q=$q.'VALUES ('."'".$username."'".','."'".$password."'".','."'".$nome."'".','."'".$cognome."'";
         $q=$q.','.'1,1,'."'".$stato."'".')';
         
@@ -149,7 +149,7 @@ function Count_All($table,$filter=0){
         $rs=$this->db->query($q);
 
         //ID Ultimo Utente Aggiunto
-        $q='SELECT max(id) as max from UTENTI';
+        $q='SELECT max(id) as max from utenti';
         $rs=$this->db->query($q);
         $id=$rs->row()->max;
 
@@ -159,7 +159,7 @@ function Count_All($table,$filter=0){
         $rs=$this->db->query($q);
 
         //Recupero id diritto aggiunto per l'utente;
-        $q='SELECT max(id) as max from DIRITTI';
+        $q='SELECT max(id) as max from diritti';
         $rs=$this->db->query($q);
         $id=$rs->row()->max;
 
@@ -192,7 +192,7 @@ function Count_All($table,$filter=0){
         $stato=$rec['stato'];
         $username=$rec['username'];
         $password=$this->encrypt->encode($rec['password']);
-        $q=' UPDATE UTENTI SET  username = '."'".$username."'".',password = '."'".$password."'".',nome = '."'".$nome."'";
+        $q=' UPDATE utenti SET  username = '."'".$username."'".',password = '."'".$password."'".',nome = '."'".$nome."'";
         $q=$q.', cognome = '."'".$cognome."'".', stato = '."'".$stato."'";
         $q=$q.' WHERE id='.$id;
         //echo $q;
@@ -204,7 +204,7 @@ function Count_All($table,$filter=0){
    //
    function delete_user($id){
 
-        $q=' UPDATE UTENTI SET STATO='."'".'C'."'".'WHERE id='.$id;
+        $q=' UPDATE utenti SET STATO='."'".'C'."'".'WHERE id='.$id;
         $rs=$this->db->query($q);
    }
 
@@ -239,7 +239,7 @@ function get_Utenti($filter,$num,$offset=5){
 
 function log_utenti($username){
 
-    $sql='SELECT NOME,COGNOME,DATAINI,DATAFIN,SECONDI FROM VACCESSI WHERE USERNAME LIKE '."'%".$username."%'";
+    $sql='SELECT NOME,COGNOME,DATAINI,DATAFIN,SECONDI FROM vaccessi WHERE USERNAME LIKE '."'%".$username."%'";
     $sql=$sql.'ORDER BY datafin DESC';
     //echo $sql;
     $rs=$this->db->query($sql);
@@ -253,7 +253,7 @@ function log_utenti($username){
 
 function get_infouser($user){
 
-        $sql='SELECT nome,cognome from UTENTI WHERE USERNAME = '."'".$user."'";
+        $sql='SELECT nome,cognome from utenti WHERE USERNAME = '."'".$user."'";
 
         //echo $sql;
         
@@ -327,7 +327,7 @@ function get_privilegi($id_user,$app){
 
 
      $sql='SELECT applicazione FROM applicazioni WHERE applicazione';
-     $sql=$sql.' NOT IN (SELECT APPLICAZIONE FROM PRIVILEGI WHERE id_user='.$id_usr.')';
+     $sql=$sql.' NOT IN (SELECT APPLICAZIONE FROM privilegi WHERE id_user='.$id_usr.')';
      //echo $sql;
      $rs=$this->db->query($sql);
      if  ($rs->num_rows()>0){

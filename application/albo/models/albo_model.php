@@ -14,7 +14,7 @@ class albo_model extends CI_Model {
   
   function get_infouser($user){
 
-        $sql='SELECT nome,cognome from UTENTI WHERE USERNAME = '."'".$user."'";
+        $sql='SELECT nome,cognome from utenti WHERE USERNAME = '."'".$user."'";
 
         //echo $sql;
 
@@ -49,7 +49,7 @@ class albo_model extends CI_Model {
   
  
   $sql='SELECT id,codice,ente,tipo,oggetto,descrizione,id_utente,responsabile  ,dal,al,periodo,stato';
-  $sql=$sql.' FROM VREGISTRO WHERE (STATO ='."'".'P'."'".' OR STATO ='."'".'C'."'";
+  $sql=$sql.' FROM vregistro WHERE (STATO ='."'".'P'."'".' OR STATO ='."'".'C'."'";
   $sql=$sql.') AND DATE(datareg) >= STR_TO_DATE('."'".$dal."'".','."'".'%d/%m/%Y'."'".')';
   $sql=$sql.'AND DATE(datareg) <= STR_TO_DATE('."'".$al."'".','."'".'%d/%m/%Y'."'".')';
   $sql=$sql.'AND STR_TO_DATE(al,'."'".'%d-%m-%Y'."'".') < CURDATE() ORDER BY ANNO,PROGR,CODICE,DAL';
@@ -75,7 +75,7 @@ class albo_model extends CI_Model {
 
  function get_tipiatti(){
 
-    $sql='SELECT descrizione FROM TIPI_ATTI';
+    $sql='SELECT descrizione FROM tipi_atti';
     $rs=$this->db->query($sql);
     //log_message('debug', $rs->num_rows());
     if  ($rs->num_rows()>0){
@@ -90,7 +90,7 @@ class albo_model extends CI_Model {
  function get_giornale(){
      
     $data=array(); 
-    $sql='SELECT * FROM LOG_REGISTRO'; 
+    $sql='SELECT * FROM log_registro'; 
     $rs=$this->db->query($sql);
     //log_message('debug', $rs->num_rows());
     if  ($rs->num_rows()>0){
@@ -119,7 +119,7 @@ function getlast_registro(){
 
   $data=array();
   $sql='SELECT id,codice,rif,ente,id_tipo,tipo,oggetto,descrizione,id_utente,responsabile,dal,al as al,periodo,stato';
-  $sql=$sql.' FROM VREGISTRO WHERE STATO!='."'".'A'."'";
+  $sql=$sql.' FROM vregistro WHERE STATO!='."'".'A'."'";
 
   
     
@@ -156,7 +156,7 @@ function getlast_registro(){
  function getdati_certificazione($id) {
 
   $data=array();
-  $sql='SELECT ente,oggetto,codice,dal,al FROM VREGISTRO WHERE id='.$id;
+  $sql='SELECT ente,oggetto,codice,dal,al FROM vregistro WHERE id='.$id;
   //echo $sql;
   $rs=$this->db->query($sql);
   //log_message('debug', $rs->num_rows());
@@ -194,7 +194,7 @@ function dml_atto($op,$rec){
         //Calcolo progressivo codice
         // se non trova record per l'anno nuovo Null è convertiro in 0 e si riparte
         // da 1
-        $q='SELECT max(progr) as progr FROM REGISTRO WHERE anno='."'".$anno."'";
+        $q='SELECT max(progr) as progr FROM registro WHERE anno='."'".$anno."'";
         $rs=$this->db->query($q);
         $progr=$rs->row()->progr+1;
         $codice=$progr.' '.date('Y');
@@ -215,10 +215,10 @@ function dml_atto($op,$rec){
        $this->db->query($q);
        //Registro L'utente che ha generato la modifica
        $this->db->select_max('id');
-          $query = $this->db->get('LOG_REGISTRO');
+          $query = $this->db->get('log_registro');
           $id=$query->row()->id;
           $id_utente=$rec['id_utente'];
-          $q='UPDATE LOG_REGISTRO SET ID_UTENTE_MOD='.$id_utente.',datamod=CURDATE() WHERE ID='.$id;
+          $q='UPDATE log_registro SET ID_UTENTE_MOD='.$id_utente.',datamod=CURDATE() WHERE ID='.$id;
           //echo $q;
           $this->db->query($q);
         
@@ -230,7 +230,7 @@ function dml_atto($op,$rec){
           $descrizione=mysql_real_escape_string($rec['descrizione']);
           $rif=mysql_real_escape_string($rec['rif']);
           $periodo=$rec['periodo'];
-          $q='UPDATE REGISTRO SET ID_TIPO='.$id_tipo.',RIF='."'".$rif."'".',OGGETTO='."'".$ogg."'".',DESCRIZIONE='."'".$descrizione."'";
+          $q='UPDATE registro SET ID_TIPO='.$id_tipo.',RIF='."'".$rif."'".',OGGETTO='."'".$ogg."'".',DESCRIZIONE='."'".$descrizione."'";
           $q=$q.', periodo='.$periodo.','.' datamod=CURDATE(),id_ente='.$id_ente;
           $q=$q.' WHERE ID='.$rec['id'];
           //echo $q;
@@ -255,10 +255,10 @@ function dml_atto($op,$rec){
 
           //Registro L'utente che ha generato la modifica
           $this->db->select_max('id');
-          $query = $this->db->get('LOG_REGISTRO');
+          $query = $this->db->get('log_registro');
           $id=$query->row()->id;
           $id_utente=$rec['id_utente'];
-          $q='UPDATE LOG_REGISTRO SET ID_UTENTE_MOD='.$id_utente.',datamod=CURDATE() WHERE ID='.$id;
+          $q='UPDATE log_registro SET ID_UTENTE_MOD='.$id_utente.',datamod=CURDATE() WHERE ID='.$id;
           //echo $q;
           $this->db->query($q);
         
@@ -270,7 +270,7 @@ function dml_atto($op,$rec){
           $descrizione=mysql_real_escape_string($rec['descrizione']);
           $rif=mysql_real_escape_string($rec['rif']);
           $periodo=$rec['periodo'];
-          $q='UPDATE REGISTRO SET ID_TIPO='.$id_tipo.',RIF='."'".$rif."'".',OGGETTO='."'".$ogg."'".',DESCRIZIONE='."'".$descrizione."'";
+          $q='UPDATE registro SET ID_TIPO='.$id_tipo.',RIF='."'".$rif."'".',OGGETTO='."'".$ogg."'".',DESCRIZIONE='."'".$descrizione."'";
           $q=$q.', periodo='.$periodo.', dal=CURDATE(),al=DATE_ADD(CURDATE(),INTERVAL '.$periodo.' DAY),'.' datamod=CURDATE(),';
           $q=$q.'id_ente='.$id_ente;
           $q=$q.' WHERE ID='.$rec['id'];
@@ -287,7 +287,7 @@ function dml_atto($op,$rec){
       $descrizione=mysql_real_escape_string($rec['descrizione']);
       $rif=mysql_real_escape_string($rec['rif']);
       $periodo=$rec['periodo'];
-      $q='UPDATE REGISTRO SET ID_TIPO='.$id_tipo.',RIF='."'".$rif."'".',OGGETTO='."'".$ogg."'".',DESCRIZIONE='."'".$descrizione."'";
+      $q='UPDATE registro SET ID_TIPO='.$id_tipo.',RIF='."'".$rif."'".',OGGETTO='."'".$ogg."'".',DESCRIZIONE='."'".$descrizione."'";
       $q=$q.', periodo='.$periodo.', dal=CURDATE(),al=DATE_ADD(CURDATE(),INTERVAL '.$periodo.' DAY),'.' datamod=CURDATE(),';
       $q=$q.'id_ente='.$id_ente;
       $q=$q.' WHERE ID='.$rec['id'];
@@ -298,7 +298,7 @@ function dml_atto($op,$rec){
     }
 
     if ($op=='del') {
-      $q='UPDATE REGISTRO SET STATO='."'".'A'."'".' WHERE ID='.$rec['id'];
+      $q='UPDATE registro SET STATO='."'".'A'."'".' WHERE ID='.$rec['id'];
       //echo $q;
       $rs=$this->db->query($q);
       //Registro la odifica sul gironale delle modifiche(Log Registro)
@@ -308,7 +308,7 @@ function dml_atto($op,$rec){
   if ($op=='pub') {
 
       
-      $q='UPDATE REGISTRO SET ID_UTENTE='.$this->session->userdata('id_user').',STATO='."'".'P'."'";
+      $q='UPDATE regsitro SET ID_UTENTE='.$this->session->userdata('id_user').',STATO='."'".'P'."'";
       $q=$q.',dal=CURDATE(),al=DATE_ADD(CURDATE(),INTERVAL PERIODO DAY),DATAMOD=NOW()';
       $q=$q.'WHERE ID='.$rec['id'];
       //echo $q;
@@ -319,7 +319,7 @@ function dml_atto($op,$rec){
   }
 
   if ($op=='cer') {
-      $q='UPDATE REGISTRO SET STATO='."'".'C'."'".' WHERE ID='.$rec['id'];
+      $q='UPDATE registro SET STATO='."'".'C'."'".' WHERE ID='.$rec['id'];
       //echo $q;
       $rs=$this->db->query($q);
       
