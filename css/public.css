@@ -1,0 +1,89 @@
+/* 
+    Document   : public
+    Created on : 16-Feb-2013, 17:48:31
+    Author     : johnny
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+body {
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+    font-size: 80%;
+}
+
+body {
+    background:  repeat-y scroll center center #CBD6DE;
+    color: #000000;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.footer{
+    margin-bottom: auto;
+    margin-top: 20em;
+    text-align: center;
+    border-top:solid 1px #c0c0c0;
+    border-bottom:solid 1px #c0c0c0;
+}
+
+
+#logo{
+    
+    
+    border: #fff none;
+    height:45px; 
+    width:166px;
+    
+}
+
+#info{
+    padding:10px;
+    font-size: 80%;
+}
+
+#filtrorep {
+    text-align: center;
+}
+
+#maindiv{
+width:100%;
+/* Firefox */
+display:-moz-box;
+-moz-box-pack:center;
+-moz-box-align:center;
+
+/* Safari and Chrome */
+display:-webkit-box;
+-webkit-box-pack:center;
+-webkit-box-align:center;
+
+/* W3C */
+display:box;
+box-pack:center;
+box-align:center;
+}
+
+dati-rep-pub{
+    text-align: center;
+}
+
+#rowhead{
+    display:table-row;
+    padding-bottom: 20px;
+    text-align: center;
+}
+
+#rowel{
+    display:table-row;
+    padding-bottom: 20px;
+    text-align: left;
+}
+
+
+#cell{
+    display:table-cell;
+    padding:10px;
+    border: solid #008000;
+    
+}
