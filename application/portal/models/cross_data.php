@@ -192,7 +192,34 @@ function Count_All($table,$filter){
     }
 
   
+ function getregistropub($id,$filter,$off=0,$lim=6) {
+
+  $data=array();
+  $sql='SELECT oggetto,ente,tipo';
+  $sql=$sql.' FROM vregistropub';
+  
+  //$filtri=explode('-',$filter);
+
+  //if ($filtri[0]!='NUL') $sql=$sql.' AND ente LIKE '."'%".$filtri[0]."%'";
+  //if ($filtri[1]!='NUL') $sql=$sql.' AND oggetto LIKE '."'%".$filtri[1]."%'";
+  //if ($filtri[2]!='NUL') $sql=$sql.' AND responsabile LIKE '."'%".$filtri[2]."%'";
+  
+  if ($id!=0) $sql=$sql.'AND ID='.$id;
+  $sql=$sql.' LIMIT '.$lim.' OFFSET '.$off;
+
+  $rs=$this->db->query($sql);
+  if  ($rs->num_rows()>0){
+
+            $data=$rs->result_array();
+            $rs->free_result();
+            return $data;
+        }
+  
+   // Nessun record 
+   $rs->free_result();
+   return false;
+
+}
 
 
-
-  }
+}

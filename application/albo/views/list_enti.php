@@ -12,7 +12,7 @@
 <script type="text/javascript">
 function add()
 {
-
+$('#dati').hide();
 $('#tipo').val('');
 $('#nome').val('');
 $('#indir').val('');
@@ -40,7 +40,7 @@ var piva=$('tr:eq(' + row + ') td:eq(5)').text();
 var cf=$('tr:eq(' + row + ') td:eq(6)').text();
 
 
-
+$('#dati').hide();
 $('#idente').val(id);
 $('#tipo').val(tipo);
 $('#nome').val(nome);
