@@ -161,6 +161,7 @@
  * And away we go...
  *
  */
+        echo 'hi there';
 require_once BASEPATH.'core/CodeIgniter'.EXT;
 
 /* End of file index.php */
