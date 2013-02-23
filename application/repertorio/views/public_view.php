@@ -1,62 +1,86 @@
 <?php
-
 /*
  * Gestione Missioni
  *
  * Author:
- *	Jhonny Ramundi <http://www.jhonnynext.it>
+ * 	Jhonny Ramundi <http://www.jhonnynext.it>
  */
-
- ?>
-<?php  require dirname(__FILE__).'/includes/head_public.php'; ?>
+?>
+<?php require dirname(__FILE__) . '/includes/head_public.php'; ?>
 <script type="text/javascript">
+    
+$(function(){
+
+
+$('#testo-rif').click(function(){
+
+var testo=$(this).children(':nth-child(1)').text();
+if (testo=='mostra'){
+    $('#testo-rif > p').show();
+    $(this).children(':nth-child(1)').replaceWith(' <a href="#">nascondi</a>');
+    
+}
+else {
+    $('#testo-rif > p').hide();
+    $(this).children(':nth-child(1)').replaceWith(' <a href="#">mostra</a>');
+    }
+    });
+});
 
 </script>
 
 <body>
     <div id="maindiv">    
-<h1><?php echo $title;  ?></h1>
-<h2><b>Registro pubblico degli atti in albo pretorio del comune di  ORTONA</b></h2>
-<form id="filtrorep" method="post" action='<?php echo site_url()."/albo/set_filtro" ?>'  >
-    <table id="ricerca">
-        <tr>
-            <th>richiedente</th>
-            <th>oggetto</th>
-            <th>tipo</th>
-           
-        </tr>
-        <tr>
-            <td><?php echo form_input('ente',$fil1)?> </td>
-            <td><?php echo form_input('oggetto',$fil2)?> </td>
-            <td><?php echo form_input('tipo',$fil4)?> </td>
-        </tr>
-        <tr><td><?php $par='id="ricerca" onclick="refresh();"'; echo form_submit('ricerca', 'Cerca'); ?></td></tr>
-    </table>
-</form>
-<br>
-<br>
-<div id="dati-rep-pub">
-    <div id="rowhead">
-        <div id="cell">oggetto</div>
-        <div id="cell">ente</div>
-        <div id="cell">tipo</div>
-         
+
+        <h2><b>Registro pubblico degli atti in albo pretorio del comune di  ORTONA</b></h2>
+        <div id="testo-rif">
+            Riferimento Normativo:<a href="#">mostra</a>
+            <p>
+
+                L’Albo Pretorio Informatico è istituito, ai sensi e per gli effetti di cui all’articolo 32 della Legge n. 69 del 18 giugno 2009, con finalità di soddisfare il requisito di pubblicità legale degli atti e dei provvedimenti ivi pubblicati.
+
+                Chiunque può ricercare, visionare e stampare gli atti durante il periodo di pubblicazione, direttamente e in ogni momento, da queste pagine. La richiesta di copia conforme all’originale degli atti pubblicati deve essere formalizzata con richiesta di accesso agli uffici competenti.
+
+                Scaduti i termini della pubblicazione, gli atti potranno essere richiesti in visione e rilascio previa richiesta di accesso ai documenti ai sensi della legge 241/1990.
+
+                Disciplina dell’Albo Pretorio informatico 
+            </p>
+        </div>
+        
+        <form id="filtrorep" method="post" action='<?php echo site_url() . "/repertorio/index" ?>'  >
+            <label>Tipo</label>
+            <?php echo form_input('tipo') ?>
+            <?php echo form_submit('ricerca', 'Filtra'); ?>
+        </form>
+        <div id="dati-rep-pub">
+         <div id="rowhead">
+                <div id="cell">tipo</div>
+                <div id="cell">provenienza</div>
+                <div id="cell">pubblicato il</div>
+                <div id="cell">scadenza il</div>
+                <div id="cell">Seleziona</div>
+
+         </div>
+<?php if ($registro === false): ?>
+                <p><b>Non ci Sono registrazioni</b></p>
+            <?php else: ?>
+                <?php $i = 1;
+                foreach ($registro as $m): ?>
+                    <div id="rowel"><?php $id = $m['id']; ?>
+                        <div id="cell"><?php echo $m['tipo'] ?></div>
+                        <div id="cell"><?php echo 'provenineza da mappare' ?></div>
+                        <div id="cell"><?php echo $m['dal'] ?></div>
+                        <div id="cell"><?php echo $m['al'] ?></div>
+                        <div id="cell"><button>Visualizza Atto</button></div>
+
+                    </div>
+                    <div id="oggetto"><strong>oggetto:  </strong><?php echo $m['oggetto'] ?><hr></div>
+                    <?php $i++;
+                endforeach ?>
+            <?php endif; ?>
+        </div>
+        
     </div>
-    <?php  if($registro === false): ?>
-    <p><b>Non ci Sono registrazioni</b></p>
-<?php  else: ?>
-<?php $i = 1;foreach($registro as $m): ?>
-    <div id="rowel"><?php $id=$m['id']; ?>
-        <div id="cell"><?php echo $m['oggetto'] ?></div>
-        <div id="cell"><?php echo $m['ente'] ?></div>
-        <div id="cell"><?php echo $m['tipo'] ?></div>
-        <div id="cell"><button>Visualizza Atto</button></div>
-    </div>    
-    <?php $i++; endforeach ?>
-   <?php  endif; ?>
-</div>
-<br>
-    
-<?php  require dirname(__FILE__).'/includes/footer.php'; ?>
-</div>
+    <div id="paginator" align="center"><?php echo 'Pagina:' . $this->pagination->create_links(); ?></div>
+        <?php require dirname(__FILE__) . '/includes/footer.php'; ?>
 </body>

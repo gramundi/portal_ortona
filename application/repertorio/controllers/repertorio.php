@@ -8,44 +8,36 @@ class repertorio extends CI_Controller {
         function repertorio() {
                parent::__construct();
                $this->load->model($this->config->item('share_model'),'cd');
-               // $this->load->library('pagination');
-               
-
+               $this->load->library('pagination');
+              
 	}
 
-         function set_filtro(){
-            
-            if ($_POST['tipo']=='') $tipo='NUL';
-            else $tipo=$_POST['tipo'];
-            if ($_POST['oggetto']=='') $tipo='NUL';
-            else $tipo=$_POST['oggetto'];
-
-            
-        }
-
-        function reset_filtro(){
-            $this->filter='NUL-NUL-NUL';
-            $id_usr=$this->session->userdata('id_user');
-            $this->cd->registra_filtro($this->filter,'repertorio',$id_usr);
-            
-        }
+     
 
         function index( ) {
             
                
-                //$this->filter=$this->cd->leggi_filtro('repertorio',$id_usr);
-
-                //$offset=$this->uri->segment(3);
-                //if ($offset==0) $offset=0;
-                //$limit=10;
-                //$config['uri_segment'] = 3;
-                //$config['base_url'] = base_url().'albo.php/albo/index';
-                //$config['total_rows'] =$this->cd->Count_All('vregistro',$this->filter);
-                //$config['per_page'] = '10';
-                //$this->pagination->initialize($config);
-                //echo $this->filter
-                $this->filter='NUL-NUL-NUL-NUL-NUL-NUL';
-                $this->_getregistro('public',0,10,10);
+                
+                //l'utente ha richiesto ricerca
+                if (isset($_POST['tipo'])) 
+                    //registro il filtro in sessione
+                    $this->session->set_userdata('filter',$_POST['tipo']);
+               
+                //se il filtro è in session me lo riprendo altrimenti azzero il filtro
+                if ($this->session->userdata('filter'))
+                    $this->filter=$this->session->userdata('filter');
+                else 
+                    $this->filter='NUL';
+                $offset=$this->uri->segment(3);
+                if ($offset==0) $offset=0;
+                $limit=3;
+                $config['uri_segment'] = 3;
+                $config['base_url'] = base_url().'repertorio.php/repertorio/index';
+                
+                $config['total_rows'] =$this->cd->Count_All('vregistropub',$this->filter);
+                $config['per_page'] = '3';
+                $this->pagination->initialize($config);
+                $this->_getregistro('public',0,$offset,$limit);
                
        }
 
@@ -55,7 +47,7 @@ class repertorio extends CI_Controller {
           
        
        $data['registro']=$this->cd->getregistropub(0,$this->filter,$off,$lim);
-       //print_r($data);
+       $data['title']='Repertorio Comune Ortona';
        $this->load->view('public_view', $data);
 
           

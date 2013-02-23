@@ -157,6 +157,11 @@ function Count_All($table,$filter){
         if ($filtri[1]!='NUL') $sql=$sql.' AND ragsoc LIKE '."'%".$filtri[1]."%'";
 
         break;
+     case 'vregistropub':
+        $sql=$sql.' WHERE 1=1' ;
+        if ($filtri[0]!='NUL') $sql=$sql.' AND tipo LIKE '."'%".$filtri[0]."%'";
+        break;
+
 
  }
 
@@ -195,12 +200,13 @@ function Count_All($table,$filter){
  function getregistropub($id,$filter,$off=0,$lim=6) {
 
   $data=array();
-  $sql='SELECT oggetto,ente,tipo';
+  $sql='SELECT id,tipo,dal,al,oggetto';
   $sql=$sql.' FROM vregistropub';
-  
-  //$filtri=explode('-',$filter);
+  $sql=$sql.' WHERE 1=1' ;
+   
+  $filtri=explode('-',$filter);
 
-  //if ($filtri[0]!='NUL') $sql=$sql.' AND ente LIKE '."'%".$filtri[0]."%'";
+  if ($filtri[0]!='NUL') $sql=$sql.'   AND tipo LIKE '."'%".$filtri[0]."%'";
   //if ($filtri[1]!='NUL') $sql=$sql.' AND oggetto LIKE '."'%".$filtri[1]."%'";
   //if ($filtri[2]!='NUL') $sql=$sql.' AND responsabile LIKE '."'%".$filtri[2]."%'";
   

@@ -16,7 +16,8 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <link rel="stylesheet" href="<?php echo base_url()?>css/public.css" media="screen,handheld,projection" />
     <link rel="shortcut icon" href="<?php echo base_url()?>images/web/public.ico" />
-   
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+
   </head>
  
   
