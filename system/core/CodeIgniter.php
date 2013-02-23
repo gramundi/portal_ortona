@@ -240,7 +240,6 @@
  */
 	$class  = $RTR->fetch_class();
 	$method = $RTR->fetch_method();
-        echo $class;
 	if ( ! class_exists($class)
 		OR strncmp($method, '_', 1) == 0
 		OR in_array(strtolower($method), array_map('strtolower', get_class_methods('CI_Controller')))
