@@ -117,7 +117,7 @@ case 'c':   //alert('certifica');
                                         echo anchor("albo/clona/".$id, "Clona",'class=button').
                                              anchor("albo/addmod/mod/".$id, "Modifica",'class=button').
                                              anchor("albo/addmod/del/".$id, "Cancella", array('class' => 'button','onclick' => "return confirm('Are you sure that you want to delete ?')")).
-                                             anchor("albo/addmod/pub/".$id, "Pubblica",'class=button');
+                                             anchor("albo/pubblica/".$id, "Pubblica",'class=button');
                                         echo '</td>';
                                         break;
 
@@ -145,7 +145,7 @@ case 'c':   //alert('certifica');
                                         anchor("albo/clona/".$id, "Clona",'class=button').
                                         anchor("albo/addmod/mod/".$id, "Modifica",'class=button').
                                         anchor("albo/addmod/del/".$id, "Cancella", array('class' => 'button','onclick' => "return confirm('Are you sure that you want to delete ?')")).
-                                        anchor("albo/addmod/pub/".$id, "Pubblica",'class=button');
+                                        anchor("albo/pubblica/".$id, "Pubblica",'class=button');
                                         echo '</td>';
                                         break;
                                     case 'P':

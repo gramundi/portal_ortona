@@ -14,8 +14,7 @@ class ordinanze extends CI_Controller {
         var $run=0;
         var $filter;
         function Ordinanze() {
-                
-		echo 'entro controller ordinanze';	
+               
 		parent::__construct();
                 $id_usr=$this->session->userdata('id_user');
                 if ($id_usr==''){

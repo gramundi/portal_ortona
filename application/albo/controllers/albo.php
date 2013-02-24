@@ -26,9 +26,6 @@ class Albo extends CI_Controller {
                 $this->load->model('enti_model','em');
                 $this->load->model($this->config->item('share_model'),'cd');
                 $this->load->library('pagination');
-                
-
-
 	}
 
          function set_filtro(){
@@ -348,13 +345,7 @@ class Albo extends CI_Controller {
 
             }
 
-            if ($op=='pub'){ //recupero dati dal form  e li memorizzo sul DB
-               //$data['utente']=$this->session->userdata('id_user');
-               $data['id']=$id;
-               $this->am->dml_atto($op,$data);
-               redirect('albo');
-
-            }
+            
 
              if ($op=='cer'){ //recupero dati dal form  e li memorizzo sul DB
                //$data['utente']=$this->session->userdata('id_user');
@@ -366,6 +357,48 @@ class Albo extends CI_Controller {
 
         }
 
+ function pubblica($id) {
+   
+     if (isset($_FILES['user_file'])) {
+          
+            $anno = date('Y');
+            $mese =date('m');
+            $gg=date('d');
+            $hh=date('H');
+            $mm=date('i');
+            
+            
+            $file = $_FILES['user_file'];
+            if ($file['error'] == UPLOAD_ERR_OK and is_uploaded_file($file['tmp_name'])) {
+                //Elimina i spazi e rinomina il file da uploadare secondo il codice
+                //AAnnnnnMMGGHHmm (anno, nr. repertorio, mese, giorno, ore e minuti ) 
+                try {
+                    $cod=$this->am->getcodice($id);
+                    $cod=str_pad($cod,5,'0',STR_PAD_LEFT);
+                    
+                } catch (Exception $e) {
+                        echo 'Caught exception: ',  $e->getMessage(), "\n";
+                }
+                
+                $filename = $anno."_".$cod.$mese.$gg.$hh.$mm.'.pdf';
+                echo $filename;
+                move_uploaded_file($file['tmp_name'], $anno."/".$filename);
+                $data['nomefile'] = $filename;
+                $data['id']=$id;
+                $data['id_utente']=$this->session->userdata('id_user');
+                $op='pub';
+                $this->am->dml_atto($op,$data);
+                redirect('albo');
+               }
+        }
+        else {
+            
+            $data['id'] = $id;
+            $data['title'] = 'Documento Atto';
+            $this->load->view('pubblica', $data);
+            
+        }
+ }
         function bonifica($op) {
 
 

@@ -53,10 +53,6 @@ left: 250px;
 
 
 
-dati-rep-pub{
-    text-align: center;
-    display: table;
-}
 
 #rowhead{
     display:table-row;
@@ -67,11 +63,10 @@ dati-rep-pub{
     
 }
 
-#rowel{
+.rowel{
     display:table-row;
     padding-bottom: 20px;
     text-align: left;
-    cursor: pointer;
     background-color: silver;
     
 }
@@ -119,4 +114,21 @@ dati-rep-pub{
     text-align: left;
     font-weight: bolder;
     
+}
+
+
+.getatto {
+display:block;
+	border-style:solid;
+	border-color:#bbb #888 #666 #aaa;
+	border-width:3px 4px 4px 3px;
+	width:9em;
+	height:2em;
+	background:#ccc;
+	color:#333;
+	line-height:2;
+	text-align:center;
+	text-decoration:none;
+	font-weight:900;
+        cursor:pointer;
 }

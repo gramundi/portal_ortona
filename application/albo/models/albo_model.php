@@ -118,7 +118,7 @@ function getlast_registro(){
  function getdata_registro($id,$filter,$off=0,$lim=6) {
 
   $data=array();
-  $sql='SELECT id,codice,rif,ente,id_tipo,tipo,oggetto,descrizione,id_utente,responsabile,dal,al as al,periodo,stato';
+  $sql='SELECT id,codice,rif,ente,id_tipo,tipo,oggetto,file,descrizione,id_utente,responsabile,dal,al as al,periodo,stato';
   $sql=$sql.' FROM vregistro WHERE STATO!='."'".'A'."'";
 
   
@@ -172,6 +172,18 @@ function getlast_registro(){
 
 }
 
+ function getcodice($id) {
+
+  $sql='SELECT progr FROM vregistro WHERE id='.$id;
+  //echo $sql;
+  $rs=$this->db->query($sql);
+  //log_message('debug', $rs->num_rows());
+  if  ($rs->num_rows()>0){
+            return $rs->row()->progr;
+   }
+  else throw new Exception('Atto id='.$id.'senza codice contattare Admin');
+}
+
 
 
 function dml_atto($op,$rec){
@@ -205,7 +217,7 @@ function dml_atto($op,$rec){
         $rs=$this->db->query($q);
        
     }
-  //Bonifica Modofica rilasciando i vincoli senza più applicare i vincoli temporali
+  //Bonifica Modifica rilasciando i vincoli senza più applicare i vincoli temporali
   // Tale operazione è permessa solo ad utenti amministratori   
  
   if ($op=='bonifica') {
@@ -214,13 +226,11 @@ function dml_atto($op,$rec){
        $q=$q.',datamod,dal,al,periodo,progr,anno,codice,rif,stato)  select * from registro where id='.$rec['id'];
        $this->db->query($q);
        //Registro L'utente che ha generato la modifica
-       $this->db->select_max('id');
-          $query = $this->db->get('log_registro');
-          $id=$query->row()->id;
-          $id_utente=$rec['id_utente'];
-          $q='UPDATE log_registro SET ID_UTENTE_MOD='.$id_utente.',datamod=CURDATE() WHERE ID='.$id;
-          //echo $q;
-          $this->db->query($q);
+       $id=mysql_insert_id();
+       $id_utente=$rec['id_utente'];
+       $q='UPDATE log_registro SET ID_UTENTE_MOD='.$id_utente.',datamod=CURDATE() WHERE ID='.$id;
+       //echo $q;
+       $this->db->query($q);
         
 
           //applico la modifica sul registro
@@ -249,14 +259,12 @@ function dml_atto($op,$rec){
           //echo 'implementare giornale modifiche';
           //registro la modifica nel giornale
           $q='insert into log_registro(id_registro,id_ente,id_utente,id_tipo,oggetto,descrizione,datareg';
-          $q=$q.',datamod,dal,al,periodo,progr,anno,codice,rif,stato)  select * from registro where id='.$rec['id'];
+          $q=$q.',datamod,dal,al,periodo,progr,anno,codice,rif,stato,file)  select * from registro where id='.$rec['id'];
           $this->db->query($q);
 
 
           //Registro L'utente che ha generato la modifica
-          $this->db->select_max('id');
-          $query = $this->db->get('log_registro');
-          $id=$query->row()->id;
+          $id=mysql_insert_id();
           $id_utente=$rec['id_utente'];
           $q='UPDATE log_registro SET ID_UTENTE_MOD='.$id_utente.',datamod=CURDATE() WHERE ID='.$id;
           //echo $q;
@@ -306,15 +314,29 @@ function dml_atto($op,$rec){
   }
 
   if ($op=='pub') {
-
       
-      $q='UPDATE regsitro SET ID_UTENTE='.$this->session->userdata('id_user').',STATO='."'".'P'."'";
-      $q=$q.',dal=CURDATE(),al=DATE_ADD(CURDATE(),INTERVAL PERIODO DAY),DATAMOD=NOW()';
+       //Registro l'operazione sul log
+       $q='insert into log_registro(id_registro,id_ente,id_utente,id_tipo,oggetto,descrizione,datareg';
+       $q=$q.',datamod,dal,al,periodo,progr,anno,codice,rif,stato,file)  select * from registro where id='.$rec['id'];
+       $this->db->query($q);
+       //Registro L'utente che ha generato la modifica
+       $id=mysql_insert_id();
+       $id_utente=$rec['id_utente'];
+       $q='UPDATE log_registro SET ID_UTENTE_MOD='.$id_utente.',datamod=CURDATE() WHERE ID='.$id;
+          //echo $q;
+       $this->db->query($q);
+      
+      //Applico la Pubblicatione sul registro 
+      $filename=$rec['nomefile'];
+      $q='UPDATE registro SET ID_UTENTE='.$this->session->userdata('id_user').',STATO='."'".'P'."'";
+      $q=$q.',file='."'".$filename."'".',dal=CURDATE(),al=DATE_ADD(CURDATE(),INTERVAL PERIODO DAY),DATAMOD=NOW()';
       $q=$q.'WHERE ID='.$rec['id'];
       //echo $q;
       $rs=$this->db->query($q);
       
       //Registro la odifica sul gironale delle modifiche(Log Registro)
+      
+      
 
   }
 
