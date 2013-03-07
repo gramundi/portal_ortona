@@ -210,7 +210,7 @@ function dml_atto($op,$rec){
         $rs=$this->db->query($q);
         $progr=$rs->row()->progr+1;
         $codice=$progr.' '.date('Y');
-        $q='INSERT INTO REGISTRO(ID_ENTE,ID_UTENTE,ID_TIPO,OGGETTO,DESCRIZIONE,DATAREG,DAL,AL,PERIODO,PROGR,ANNO,CODICE,RIF,STATO)';
+        $q='INSERT INTO registro(ID_ENTE,ID_UTENTE,ID_TIPO,OGGETTO,DESCRIZIONE,DATAREG,DAL,AL,PERIODO,PROGR,ANNO,CODICE,RIF,STATO)';
         $q=$q.'VALUES ('.$id_ente.','.$ute.','.$id_tipo.','."'".$ogg."'".','."'".$descrizione."'".',';
         $q=$q.'CURDATE(),'.'CURDATE(),'.'DATE_ADD(CURDATE(),INTERVAL '.$periodo.' DAY),'.$periodo;
         $q=$q.','.$progr.','.$anno.','."'".$codice."'".','."'".$rif."'".','."'".'I'."')";
