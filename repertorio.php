@@ -38,7 +38,6 @@
  *
  */
 	$application_folder = "application/repertorio";
-       
 
 /*
  * --------------------------------------------------------------------
@@ -86,15 +85,12 @@
  * Un-comment the $assign_to_config array below to use this feature
  *
  */
-	// $assign_to_config['name_of_config_item'] = 'value of config item';
-         $assign_to_config['share_model'] = '/../../portal/models/cross_data';
 
-
+	$assign_to_config['share_model'] = '/../../portal/models/cross_data';
 
 // --------------------------------------------------------------------
 // END OF USER CONFIGURABLE SETTINGS.  DO NOT EDIT BELOW THIS LINE
 // --------------------------------------------------------------------
-
 
 
 
@@ -107,10 +103,8 @@
 	{
 		$system_path = realpath($system_path).'/';
 	}
-
 	// ensure there's a trailing slash
 	$system_path = rtrim($system_path, '/').'/';
-
 	// Is the system path correct?
 	if ( ! is_dir($system_path))
 	{
@@ -152,7 +146,6 @@
 
 		define('APPPATH', BASEPATH.$application_folder.'/');
 	}
-
 /*
  * --------------------------------------------------------------------
  * LOAD THE BOOTSTRAP FILE
@@ -161,7 +154,6 @@
  * And away we go...
  *
  */
-        echo 'hi there';
 require_once BASEPATH.'core/CodeIgniter'.EXT;
 
 /* End of file index.php */

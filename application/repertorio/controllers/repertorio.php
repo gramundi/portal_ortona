@@ -7,8 +7,10 @@ class repertorio extends CI_Controller {
         var $filter;
         function repertorio() {
                parent::__construct();
-               $this->load->model($this->config->item('share_model'),'cd');
-               $this->load->library('pagination');
+              $this->load->model($this->config->item('share_model'),'cd');
+              //$this->load->model('cross_data','cd');
+		
+		$this->load->library('pagination');
               
 	}
 
@@ -17,7 +19,6 @@ class repertorio extends CI_Controller {
         function index( ) {
             
                
-                
                 //l'utente ha richiesto ricerca
                 if (isset($_POST['tipo'])) 
                     //registro il filtro in sessione
