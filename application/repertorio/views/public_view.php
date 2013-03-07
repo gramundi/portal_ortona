@@ -25,7 +25,36 @@ else {
     $(this).children(':nth-child(1)').replaceWith(' <a href="#">mostra</a>');
     }
     });
+ 
+ $('.getatto').click(function(){
+
+    //Ajax call to get other data and file linked
+    
+    id=$(this).parent().parent().attr('id');
+    //console.log(id);
+    url='<?php echo site_url()."/repertorio/getdata"; ?>';
+    $.getJSON(url, data={id:id}, function(data){
+       //if (data == null) console.log('null');
+       if (data != null){
+            anno=data.substr(0,4);
+            var docLocation = '<?php echo base_url()?>'+anno+'/'+data;
+            var urlback = '<?php echo site_url()."/repertorio";?>';
+            console.log(urlback+'--'+docLocation);
+            $('body').html('<div><object data="'+docLocation+'" type="application/pdf" width="800" height="600"></object></div>'); 
+            $('body').append('<div><a href="'+urlback+'">Torna Elenco Atti</a></div>');
+       }
+       
+       
+    });
+ 
+ 
+
 });
+    
+    
+});
+
+
 
 </script>
 
@@ -50,6 +79,9 @@ else {
         <form id="filtrorep" method="post" action='<?php echo site_url() . "/repertorio/index" ?>'  >
             <label>Tipo</label>
             <?php echo form_input('tipo') ?>
+            <label>Oggetto</label>
+             <?php echo form_input('oggetto') ?>
+            
             <?php echo form_submit('ricerca', 'Filtra'); ?>
         </form>
         <div id="dati-rep-pub">
@@ -66,15 +98,15 @@ else {
             <?php else: ?>
                 <?php $i = 1;
                 foreach ($registro as $m): ?>
-                    <div id="rowel"><?php $id = $m['id']; ?>
+                    <div class="rowel" id =" <?php echo $m['id']; ?>">
                         <div id="cell"><?php echo $m['tipo'] ?></div>
-                        <div id="cell"><?php echo 'provenineza da mappare' ?></div>
+                        <div id="cell"><?php echo $m['richiedente'] ?></div>
                         <div id="cell"><?php echo $m['dal'] ?></div>
                         <div id="cell"><?php echo $m['al'] ?></div>
-                        <div id="cell"><button>Visualizza Atto</button></div>
+                        <div id="cell"><div class="getatto">Visualizza Atto</div></div>
 
                     </div>
-                    <div id="oggetto"><strong>oggetto:  </strong><?php echo $m['oggetto'] ?><hr></div>
+                    <div id="oggetto"><strong>oggetto:  </strong><?php echo $m['oggetto'] ?></div>
                     <?php $i++;
                 endforeach ?>
             <?php endif; ?>

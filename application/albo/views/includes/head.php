@@ -20,6 +20,7 @@
     <script type="text/javascript" src="<?php echo base_url()?>js/prototype.js"></script>
     <script type="text/javascript" src="<?php echo base_url()?>js/scriptaculous.js"></script>
     <script type="text/javascript" src="<?php echo base_url()?>js/jquery.pack.js"></script>
+    
   </head>
   <body>
   <div id="main-div">

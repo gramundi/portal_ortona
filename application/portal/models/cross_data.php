@@ -160,11 +160,12 @@ function Count_All($table,$filter){
      case 'vregistropub':
         $sql=$sql.' WHERE 1=1' ;
         if ($filtri[0]!='NUL') $sql=$sql.' AND tipo LIKE '."'%".$filtri[0]."%'";
+        if ($filtri[1]!='NUL') $sql=$sql.' AND oggetto LIKE '."'%".$filtri[1]."%'";
         break;
 
 
  }
-
+    
     $rs=$this->db->query($sql);
     
    //echo 'num_righe='.$rs->num_rows();
@@ -200,14 +201,14 @@ function Count_All($table,$filter){
  function getregistropub($id,$filter,$off=0,$lim=6) {
 
   $data=array();
-  $sql='SELECT id,tipo,dal,al,oggetto';
+  $sql='SELECT id,richiedente,tipo,dal,al,oggetto';
   $sql=$sql.' FROM vregistropub';
   $sql=$sql.' WHERE 1=1' ;
    
   $filtri=explode('-',$filter);
 
   if ($filtri[0]!='NUL') $sql=$sql.'   AND tipo LIKE '."'%".$filtri[0]."%'";
-  //if ($filtri[1]!='NUL') $sql=$sql.' AND oggetto LIKE '."'%".$filtri[1]."%'";
+  if ($filtri[1]!='NUL') $sql=$sql.'   AND oggetto LIKE '."'%".$filtri[1]."%'";
   //if ($filtri[2]!='NUL') $sql=$sql.' AND responsabile LIKE '."'%".$filtri[2]."%'";
   
   if ($id!=0) $sql=$sql.'AND ID='.$id;
@@ -227,5 +228,14 @@ function Count_All($table,$filter){
 
 }
 
+function get_infoatto($id){
+    
+    $this->db->select('file');
+     $this->db->where('id',$id );
+     $q=$this->db->get('registro');
+     $rs=$q->row();
+     if ($q->num_rows() > 0) return $rs->file;
+     
+}
 
 }
