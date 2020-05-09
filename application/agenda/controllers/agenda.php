@@ -12,7 +12,6 @@ class agenda extends CI_Controller {
         function agenda() {
                 
 		parent::__construct();
-                #This is the contructor
                 $this->load->model('Mycal_model','cm');
                 $this->load->model('contatti_model','com');
                 $this->load->model($this->config->item('share_model'),'cd');
