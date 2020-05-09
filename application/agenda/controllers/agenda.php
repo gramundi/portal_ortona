@@ -3,7 +3,7 @@
 class agenda extends CI_Controller {
 
         // var per variabili della classe;
-        var $offset=0;
+        //var $offset=0;
         var $limit=0;
         var $run=0;
         var $filter;
