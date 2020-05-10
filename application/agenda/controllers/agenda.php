@@ -1,8 +1,8 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class agenda extends CI_Controller {
-
-        // var per variabili della classe;
+        //Maringo
+        var per variabili della classe;
         var $offset=0;
         var $limit=0;
         //Change From Giovanni;
