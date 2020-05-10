@@ -7,7 +7,7 @@ class configura extends CI_Controller {
         var $run=0;
         var $filter;
         var $ruolo='';
-
+        //Change from Giovanni;
         function configura() {
 
 		parent::__construct();

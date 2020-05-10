@@ -5,6 +5,7 @@ class agenda extends CI_Controller {
         // var per variabili della classe;
         var $offset=0;
         var $limit=0;
+        //Change From Giovanni;
         var $run=0;
         var $filter;
         var $ruolo='';
